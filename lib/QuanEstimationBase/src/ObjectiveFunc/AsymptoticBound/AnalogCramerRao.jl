@@ -77,12 +77,12 @@ function Holevo_bound(
     end
 
     accu = length(string(Int(ceil(1 / eps)))) - 1
-    R = decomposition(round.(digits = accu, S))
+    R = decomposition(round.(digits = accu, S))#=========optimization variables===========#
 
-    #=========optimization variables===========#
+
     V = Variable(para_num, para_num)
-    X = Variable(num, para_num)
-    #============add constraints===============#
+    X = Variable(num, para_num)#============add constraints===============#
+
     constraints = [[V X'*R'; R*X Matrix{Float64}(I, num, num)] ⪰ 0]
     for i = 1:para_num
         for j = 1:para_num
@@ -119,9 +119,9 @@ Nagaoka-Hayashi bound (NHB) via the semidefinite program (SDP).
 function NHB(ρ::AbstractMatrix, dρ::AbstractVector, W::AbstractMatrix)
 
     dim = size(ρ)[1]
-    para_num = length(dρ)
+    para_num = length(dρ)#=========optimization variables===========#
 
-    #=========optimization variables===========#
+
     L_tp = [[Variable() for i = 1:para_num] for j = 1:para_num]
     for para_i = 1:para_num
         for para_j = para_i:para_num
@@ -131,9 +131,9 @@ function NHB(ρ::AbstractMatrix, dρ::AbstractVector, W::AbstractMatrix)
         end
     end
     L = vcat([hcat(L_tp[i]...) for i = 1:para_num]...)
-    X = [ComplexVariable(dim, dim) for j = 1:para_num]
+    X = [ComplexVariable(dim, dim) for j = 1:para_num]#============add constraints===============#
 
-    #============add constraints===============#
+
     constraints += [[L vcat(X...); hcat(X...) Matrix{Float64}(I, dim, dim)] ⪰ 0]
     for i = 1:para_num
         constraints += [tr(X[i] * ρ[i]) == 0]

@@ -43,8 +43,7 @@ function SaveFile(output::Output{no_save}; suffix::AbstractString = ".dat")
     end
 end
 
-function SaveFile(output::Output{savefile}) 
-end
+function SaveFile(output::Output{savefile}) end
 
 function SaveCurrent(output::Output{savefile}; suffix::AbstractString = ".dat")
     open("f.csv", "a") do f
@@ -61,8 +60,7 @@ function SaveCurrent(output::Output{savefile}; suffix::AbstractString = ".dat")
     end
 end
 
-function SaveCurrent(output::Output{no_save}) 
-end
+function SaveCurrent(output::Output{no_save}) end
 
 function SaveReward(output::Output{savefile}, reward::Number) ## TODO: reset file
     open("reward.csv", "a") do r
@@ -70,8 +68,7 @@ function SaveReward(output::Output{savefile}, reward::Number) ## TODO: reset fil
     end
 end
 
-function SaveReward(output::Output{no_save}, reward::Number)
-end
+function SaveReward(output::Output{no_save}, reward::Number) end
 
 function SaveReward(rewards)
     open("reward.csv", "w") do r

@@ -8,7 +8,7 @@ using SparseArrays
 N = 8
 # generation of the coherent spin state
 j, theta, phi = N ÷ 2, 0.5pi, 0.5pi
-Jp = Matrix(spdiagm(1 => [sqrt(j * (j + 1) - m * (m + 1)) for m = j:-1:-j][2:end]))
+Jp = Matrix(spdiagm(1 => [sqrt(j * (j + 1) - m * (m + 1)) for m = j:-1:(-j)][2:end]))
 Jm = Jp'
 psi0 =
     exp(0.5 * theta * exp(im * phi) * Jm - 0.5 * theta * exp(-im * phi) * Jp) *
@@ -18,7 +18,7 @@ dim = length(psi0)
 lambda, g, h = 1.0, 0.5, 0.1
 Jx = 0.5 * (Jp + Jm)
 Jy = -0.5im * (Jp - Jm)
-Jz = spdiagm(j:-1:-j)
+Jz = spdiagm(j:-1:(-j))
 H0 = -lambda * (Jx * Jx + g * Jy * Jy) / N - h * Jz
 # derivative of the free Hamiltonian on g
 dH = [-lambda * Jy * Jy / N]

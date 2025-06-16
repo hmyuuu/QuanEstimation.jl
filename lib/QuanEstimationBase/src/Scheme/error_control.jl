@@ -12,7 +12,7 @@ function error_control_param(
     for _ = 1:max_episode
         tspan = data.tspan
         t0, t1, te = tspan[1], tspan[2], tspan[end]
-        data = @set data.tspan = t0:(t1-t0)/2:te
+        data = @set data.tspan = t0:((t1-t0)/2):te
         scheme = @set scheme.Parameterization = typeof(Parameterization)(data, nothing)
         δF = param_error_evaluation(scheme, input_error_scaling; verbose = false)
         @show δF[1]
@@ -47,7 +47,7 @@ end
 
 function error_control(
     scheme::Scheme;
-    objective::Union{Symbol, String}="QFIM",
+    objective::Union{Symbol,String} = "QFIM",
     output_error_scaling = 1e-6,
     input_error_scaling = 1e-8,
     SLD_eps = 1e-6,
