@@ -10,7 +10,7 @@ function mintime(::Val{:binary}, f::Number, system)
         mid = fld1(low + high, 2)
 
         dynamics.data.tspan = tspan[1:mid]
-        dynamics.data.ctrl = [c[1:mid-1] for c in ctrl]
+        dynamics.data.ctrl = [c[1:(mid-1)] for c in ctrl]
         if algorithm isa DE
             algorithm.ini_population = ([dynamics.data.ctrl],)
         elseif algorithm isa PSO
@@ -55,7 +55,7 @@ function mintime(::Val{:forward}, f::Number, system)
 
     while f_now < f && idx < length(tspan)
         dynamics.data.tspan = tspan[1:idx]
-        dynamics.data.ctrl = [c[1:idx-1] for c in ctrl]
+        dynamics.data.ctrl = [c[1:(idx-1)] for c in ctrl]
         if algorithm isa DE
             algorithm.ini_population = ([dynamics.data.ctrl],)
         elseif algorithm isa PSO

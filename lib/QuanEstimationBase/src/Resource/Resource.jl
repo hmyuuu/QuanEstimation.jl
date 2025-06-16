@@ -1,13 +1,13 @@
 using SparseArrays
 
 function J₊(j::Number)
-    spdiagm(1 => [sqrt(j * (j + 1) - m * (m + 1)) for m = j:-1:-j][2:end])
+    spdiagm(1 => [sqrt(j * (j + 1) - m * (m + 1)) for m = j:-1:(-j)][2:end])
 end
 
 function Jp_full(N)
     sp = [0.0 1.0; 0.0 0.0]
     Jp, jp_tp = zeros(2^N, 2^N), zeros(2^N, 2^N)
-    for i = 0:N-1
+    for i = 0:(N-1)
         if i == 0
             jp_tp = kron(sp, Matrix(I, 2^(N - 1), 2^(N - 1)))
         elseif i == N - 1
@@ -39,7 +39,7 @@ function SpinSqueezing(ρ::AbstractMatrix; basis = "Dicke", output = "KU")
     end
     Jx = 0.5 * (Jp + Jp')
     Jy = -0.5im * (Jp - Jp')
-    Jz = spdiagm(j:-1:-j)
+    Jz = spdiagm(j:-1:(-j))
 
     Jx_mean = tr(ρ * Jx) |> real
     Jy_mean = tr(ρ * Jy) |> real

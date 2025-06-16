@@ -42,11 +42,11 @@ end
 
 # Generation of the experimental results
 Random.seed!(1234)
-y = [rand() >= 0.5 ? 0 : 1 for _ = 1:5]
+y = [rand() >= 0.5 ? 0 : 1 for _ = 1:5]#===============Maximum a posteriori estimation===============#
 
-#===============Maximum a posteriori estimation===============#
+
 pout, xout =
-    QuanEstimationBase.Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = false)
+    QuanEstimationBase.Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = false)#===============Maximum likelihood estimation===============#
 
-#===============Maximum likelihood estimation===============#
+
 Lout, xout = QuanEstimationBase.MLE([x], rho, y; M = M, savefile = false)
