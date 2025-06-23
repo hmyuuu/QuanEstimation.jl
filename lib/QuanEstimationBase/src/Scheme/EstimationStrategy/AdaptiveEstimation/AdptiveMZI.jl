@@ -1,7 +1,7 @@
 mutable struct Adapt_MZI <: AbstractScheme
-    x::Union{Nothing, AbstractVector}
-    p::Union{Nothing, AbstractVector}
-    rho0::Union{Nothing, AbstractMatrix}
+    x::Union{Nothing,AbstractVector}
+    p::Union{Nothing,AbstractVector}
+    rho0::Union{Nothing,AbstractMatrix}
 end
 
 abstract type MIZtargetType end
@@ -21,12 +21,17 @@ Online adaptive phase estimation in the MZI.
 - `target`: Setting the target function for calculating the tunable phase. Options are: "sharpness" and "MI".
 - `output`: Choose the output variables. Options are: "phi" and "dphi".
 """
-function online(apt::Adapt_MZI; target::String = "sharpness", output::String = "phi", res=nothing)
+function online(
+    apt::Adapt_MZI;
+    target::String = "sharpness",
+    output::String = "phi",
+    res = nothing,
+)
     (; x, p, rho0) = apt
-    adaptMZI_online(x, p, rho0, Symbol(output),  Symbol(target); res=res)
+    adaptMZI_online(x, p, rho0, Symbol(output), Symbol(target); res = res)
 end
 
-function adaptMZI_online(x, p, rho0, output, target; res=nothing)
+function adaptMZI_online(x, p, rho0, output, target; res = nothing)
     N = Int(sqrt(size(rho0, 1))) - 1
     a = destroy(N + 1) |> sparse
     exp_ix = [exp(1.0im * xi) for xi in x]
@@ -38,7 +43,7 @@ function adaptMZI_online(x, p, rho0, output, target; res=nothing)
     xout, y = [], []
 
     if output == :phi
-        for ei = 1:N-1
+        for ei = 1:(N-1)
             if isnothing(res)
                 println("The tunable phase is $phi ($ei episodes)")
                 print("Please enter the experimental result: ")
@@ -77,7 +82,7 @@ function adaptMZI_online(x, p, rho0, output, target; res=nothing)
         savefile_online(xout, y)
     else
         println("The initial tunable phase is $phi")
-        for ei = 1:N-1
+        for ei = 1:(N-1)
             if isnothing(res)
                 println("The tunable phase is $phi ($ei episodes)")
                 print("Please enter the experimental result: ")
@@ -452,7 +457,7 @@ function calculate_offline{sharpness}(delta_phi, x, p, rho0, a, comb, eps)
         phi = 0.0
 
         a_res = [Matrix{ComplexF64}(I, (N + 1)^2, (N + 1)^2) for i in eachindex(x)]
-        for ei = 1:N-1
+        for ei = 1:(N-1)
             phi = phi - (-1)^u[ei] * delta_phi[ei]
             for xi in eachindex(x)
                 a_res[xi] = a_res[xi] * a_u(a, x[xi], phi, u[ei])
@@ -478,7 +483,7 @@ function calculate_offline{MI}(delta_phi, x, p, rho0, a, comb, eps)
         phi = 0.0
 
         a_res = [Matrix{ComplexF64}(I, (N + 1)^2, (N + 1)^2) for i in eachindex(x)]
-        for ei = 1:N-1
+        for ei = 1:(N-1)
             phi = phi - (-1)^u[ei] * delta_phi[ei]
             for xi in eachindex(x)
                 a_res[xi] = a_res[xi] * a_u(a, x[xi], phi, u[ei])
@@ -499,7 +504,7 @@ function savefile_offline(deltaphi, flist)
     open("deltaphi.csv", "w") do m
         writedlm(m, deltaphi)
     end
- 
+
     # df = DataFrame(deltaphi = deltaphi)
     # CSV.write("deltaphi.csv", df)
 

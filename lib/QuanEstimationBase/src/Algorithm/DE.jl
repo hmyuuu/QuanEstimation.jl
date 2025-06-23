@@ -246,8 +246,7 @@ function optimize!(opt::Mopt_LinearComb, alg::DE, obj, scheme, output)
     p_fit, p_out = zeros(p_num), zeros(p_num)
     for pj = 1:p_num
         M = [
-            sum([populations[pj][i][j] * POVM_basis[j] for j = 1:basis_num]) for
-            i = 1:M_num
+            sum([populations[pj][i][j] * POVM_basis[j] for j = 1:basis_num]) for i = 1:M_num
         ]
         obj_copy = set_M(obj, M)
         p_out[pj], p_fit[pj] = objective(obj_copy, scheme)
@@ -371,7 +370,7 @@ function optimize!(opt::Mopt_Rotation, alg::DE, obj, scheme, output)
             #mutations
             mut_num = sample(opt.rng, 1:p_num, 3, replace = false)
             M_mut = Vector{Float64}(undef, dim^2)
-            for ti = 1:dim^2
+            for ti = 1:(dim^2)
                 M_mut[ti] =
                     populations[mut_num[1]][ti] +
                     c * (populations[mut_num[2]][ti] - populations[mut_num[3]][ti])
@@ -379,8 +378,8 @@ function optimize!(opt::Mopt_Rotation, alg::DE, obj, scheme, output)
 
             #crossover
             M_cross = Vector{Float64}(undef, dim^2)
-            cross_int = sample(opt.rng, 1:dim^2, 1, replace = false)[1]
-            for tj = 1:dim^2
+            cross_int = sample(opt.rng, 1:(dim^2), 1, replace = false)[1]
+            for tj = 1:(dim^2)
                 rand_num = rand(opt.rng)
                 if rand_num <= cr
                     M_cross[tj] = M_mut[tj]
@@ -400,7 +399,7 @@ function optimize!(opt::Mopt_Rotation, alg::DE, obj, scheme, output)
             if f_cross > p_fit[pj]
                 p_fit[pj] = f_cross
                 p_out[pj] = f_out
-                for tk = 1:dim^2
+                for tk = 1:(dim^2)
                     populations[pj][tk] = M_cross[tk]
                 end
             end

@@ -1,4 +1,4 @@
-using QuanEstimationBase:BCB
+using QuanEstimationBase: BCB
 function test_bayes()
     (; rho0, x, p, dp, H0_func, dH_func) = generate_bayes()
     M = SIC(2)
@@ -13,15 +13,15 @@ function test_bayes()
 
     # Generation of the experimental results
     Random.seed!(1234)
-    y = [rand() > 0.7 ? 1 : 0 for _ = 1:500]
+    y = [rand() > 0.7 ? 1 : 0 for _ = 1:500]#===============Maximum a posteriori estimation===============#
 
-    #===============Maximum a posteriori estimation===============#
+
     pout, xout = Bayes([x], p, rho, y; M = M, savefile = false)
     pout, xout = Bayes([x], p, rho, y; M = M, savefile = true)
     pout, xout = Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = false)
-    pout, xout = Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = true)
+    pout, xout = Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = true)#===============Maximum likelihood estimation===============#
 
-    #===============Maximum likelihood estimation===============#
+
     Lout, xout = MLE([x], rho, y, M = M; savefile = false)
     Lout, xout = MLE([x], rho, y, M = M; savefile = true)
 
@@ -29,7 +29,7 @@ function test_bayes()
     isfile("bayes.dat") && rm("bayes.dat")
     isfile("bayes.csv") && rm("bayes.csv")
     isfile("MLE.dat") && rm("MLE.dat")
-    isfile("MLE.csv") && rm("MLE.csv")    
+    isfile("MLE.csv") && rm("MLE.csv")
 end
 
 test_bayes()

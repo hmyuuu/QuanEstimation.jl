@@ -17,12 +17,12 @@ rho0 = psi * psi'
 # prior distribution
 x = range(-pi, pi, length = 5)
 p = (1.0 / (x[end] - x[1])) * ones(length(x))
-apt = QuanEstimationBase.Adapt_MZI(x, p, rho0)
+apt = QuanEstimationBase.Adapt_MZI(x, p, rho0)#================online strategy=========================##================offline strategy=========================#
 
-#================online strategy=========================#
+
 # QuanEstimationBase.online(apt, target=:sharpness, output="phi")
 
-#================offline strategy=========================#
+
 # algorithm: DE
 alg = QuanEstimationBase.DE(
     p_num = 10,
