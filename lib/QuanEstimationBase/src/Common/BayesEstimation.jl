@@ -282,7 +282,7 @@ function MLE(x, rho, y; M = nothing, savefile = false)
                 f["L"] = [L_out]
                 f["x"] = x_out
             end
-            
+
             # Save results to CSV
             # df = DataFrame(L = [L_out], x = x_out)
             # CSV.write("MLE.csv", df)
@@ -320,7 +320,7 @@ function integ(x, p)
     for i = 1:para_num
         p_tp = p
         if i == para_num
-            for si = 1:para_num-1
+            for si = 1:(para_num-1)
                 p_tp = trapz(x[si], p_tp, Val(1))
             end
 
@@ -330,7 +330,7 @@ function integ(x, p)
             end
         else
             p_tp = trapz(x[end], p_tp)
-            for si = 1:para_num-1
+            for si = 1:(para_num-1)
                 p_tp = trapz(x[si], p_tp, Val(1))
             end
         end

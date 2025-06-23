@@ -69,7 +69,8 @@ end
 end
 
 function SLD_liouville(ρ::Matrix{T}, ∂ρ_∂x::Matrix{T}; eps = GLOBAL_EPS) where {T<:Complex}
-    2 * pinv(kron(ρ |> transpose, ρ |> one) + kron(ρ |> one, ρ), rtol = eps) * vec(∂ρ_∂x) |> vec2mat
+    2 * pinv(kron(ρ |> transpose, ρ |> one) + kron(ρ |> one, ρ), rtol = eps) * vec(∂ρ_∂x) |>
+    vec2mat
 end
 
 function SLD_liouville(ρ::Vector{T}, ∂ρ_∂x::Vector{T}; eps = GLOBAL_EPS) where {T<:Complex}
@@ -86,7 +87,8 @@ function SLD_liouville(
 end
 
 function SLD_qr(ρ::Matrix{T}, ∂ρ_∂x::Matrix{T}) where {T<:Complex}
-    2 * (qr(kron(ρ |> transpose, ρ |> one) + kron(ρ |> one, ρ), ColumnNorm()) \ vec(∂ρ_∂x)) |>
+    2 *
+    (qr(kron(ρ |> transpose, ρ |> one) + kron(ρ |> one, ρ), ColumnNorm()) \ vec(∂ρ_∂x)) |>
     vec2mat
 end
 
@@ -218,10 +220,10 @@ function LLD(
         LLD = LLD_eig
     end
     return LLD
-end
+end#========================================================#
 
 
-#========================================================#
+
 ####################### calculate QFI ####################
 function QFIM_SLD(ρ::Matrix{T}, dρ::Matrix{T}; eps = GLOBAL_EPS) where {T<:Complex}
     SLD_tp = SLD(ρ, dρ; eps = eps)
@@ -247,9 +249,9 @@ function QFIM_pure(ρ::Matrix{T}, ∂ρ_∂x::Matrix{T}) where {T<:Complex}
     SLD2_tp = SLD * SLD
     F = tr(ρ * SLD2_tp)
     F |> real
-end
+end#==========================================================#
 
-#==========================================================#
+
 ####################### calculate QFIM #####################
 function QFIM_SLD(ρ::Matrix{T}, dρ::Vector{Matrix{T}}; eps = GLOBAL_EPS) where {T<:Complex}
     p_num = length(dρ)
@@ -279,15 +281,12 @@ end
 function QFIM_pure(ρ::Matrix{T}, ∂ρ_∂x::Vector{Matrix{T}}) where {T<:Complex}
     p_num = length(∂ρ_∂x)
     sld = [2 * ∂ρ_∂x[i] for i = 1:p_num]
-    (
-        [0.5 * ρ] .*
-        (kron(sld, reshape(sld, 1, p_num)) + kron(reshape(sld, 1, p_num), sld))
-    ) .|>
+    ([0.5 * ρ] .* (kron(sld, reshape(sld, 1, p_num)) + kron(reshape(sld, 1, p_num), sld))) .|>
     tr .|>
     real
-end
+end#======================================================#
 
-#======================================================#
+
 #################### calculate CFIM ####################
 @doc raw"""
 
@@ -552,8 +551,8 @@ function QFIM_Bloch(r, dr; eps = GLOBAL_EPS)
     else
         rho = (Matrix(I, dim, dim) + sqrt(dim * (dim - 1) / 2) * r' * Lambda) / dim
         G = zeros(ComplexF64, dim^2 - 1, dim^2 - 1)
-        for row_i = 1:dim^2-1
-            for col_j = row_i:dim^2-1
+        for row_i = 1:(dim^2-1)
+            for col_j = row_i:(dim^2-1)
                 anti_commu = Lambda[row_i] * Lambda[col_j] + Lambda[col_j] * Lambda[row_i]
                 G[row_i, col_j] = 0.5 * tr(rho * anti_commu)
                 G[col_j, row_i] = G[row_i, col_j]
@@ -677,21 +676,23 @@ function FI_Expt(y1, y2, dx; ftype = :norm)
         println("supported values for ftype are 'norm', 'poisson', 'gamma' and 'rayleigh'")
     end
     return Fc
-end
+end#======================================================#
 
 
-#======================================================#
+
 ################# Gaussian States QFIM #################
 function Williamson_form(A::AbstractMatrix)
     n = size(A)[1] // 2 |> Int
     J = zeros(n, n) |> x -> [x one(x); -one(x) x]
     A_sqrt = sqrt(A)
     B = A_sqrt * J * A_sqrt
-    P = one(A) |> x -> [x[:, 1:2:2n-1] x[:, 2:2:2n]]
+    P = one(A) |> x -> [x[:, 1:2:(2n-1)] x[:, 2:2:2n]]
     t, Q, vals = schur(B)
-    c = vals[1:2:2n-1] .|> imag
-    D = c |> diagm |>complex |> x -> x^(-0.5)
-    S = (J * A_sqrt * Q * P * [zeros(n, n) -D; D zeros(n, n)] |> transpose |> inv) * transpose(P)
+    c = vals[1:2:(2n-1)] .|> imag
+    D = c |> diagm |> complex |> x -> x^(-0.5)
+    S =
+        (J * A_sqrt * Q * P * [zeros(n, n) -D; D zeros(n, n)] |> transpose |> inv) *
+        transpose(P)
     return S, c
 end
 
@@ -750,8 +751,8 @@ function QFIM_Gauss(R̄::V, dR̄::VV, D::M, dD::VM) where {V,VV,M,VM<:AbstractVe
     S, cs = Williamson_form(C)
     Gs = G_Gauss(S, dC, cs)
     F = [
-        tr(Gs[i] * dC[j]) + transpose(dR̄[i]) * inv(C) * dR̄[j] for i = 1:para_num,
-        j = 1:para_num
+        tr(Gs[i] * dC[j]) + transpose(dR̄[i]) * inv(C) * dR̄[j] for
+        i = 1:para_num, j = 1:para_num
     ]
 
     if para_num == 1

@@ -1,7 +1,7 @@
 # include("mintime.jl")
 include("BayesEstimation.jl")
 
-destroy(N) = diagm(1 => [sqrt(n) + 0.0im for n = 1:N-1])
+destroy(N) = diagm(1 => [sqrt(n) + 0.0im for n = 1:(N-1)])
 
 bases(dim; T = ComplexF64) = [e for e in I(dim) .|> T |> eachrow]
 
@@ -64,7 +64,7 @@ function suN_generator(n::Int64)
     idx = 2
     itr = 1
 
-    for i = 1:n-1
+    for i = 1:(n-1)
         idx_t = idx
         while idx_t > 0
             result[itr] =
@@ -382,7 +382,7 @@ function initial_Rotation!(measurement0, s_all, dim, p_num, rng)
         measurement0 = [measurement0[i] for i = 1:p_num]
     end
     for pj in eachindex(measurement0)
-        s_all[pj] = [measurement0[pj][i] for i = 1:dim*dim]
+        s_all[pj] = [measurement0[pj][i] for i = 1:(dim*dim)]
     end
 
     for pj = (length(measurement0)+1):p_num

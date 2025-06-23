@@ -54,9 +54,9 @@ function QZZB(
     for i = 1:p_num
         arr = [
             real(2 * minimum([p[j], p[j+i-1]]) * helstrom_bound(rho[j], rho[j+i-1], ν))
-            for j = 1:p_num-i+1
+            for j = 1:(p_num-i+1)
         ]
-        f_tp = trapz(x[1:p_num-i+1], arr)
+        f_tp = trapz(x[1:(p_num-i+1)], arr)
         f_tau[i] = f_tp
     end
     arr2 = [tau[m] * maximum(f_tau[m:end]) for m = 1:p_num]
