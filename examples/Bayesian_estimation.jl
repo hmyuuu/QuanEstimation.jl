@@ -29,10 +29,10 @@ end
 
 # Generation of the experimental results
 Random.seed!(1234)
-y = [rand() > 0.7 ? 1 : 0 for _ = 1:500]
+y = [rand() > 0.7 ? 1 : 0 for _ = 1:500]#===============Maximum a posteriori estimation===============#
 
-#===============Maximum a posteriori estimation===============#
-pout, xout = Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = false)
 
-#===============Maximum likelihood estimation===============#
+pout, xout = Bayes([x], p, rho, y; M = M, estimator = "MAP", savefile = false)#===============Maximum likelihood estimation===============#
+
+
 Lout, xout = MLE([x], rho, y, M = M; savefile = false)

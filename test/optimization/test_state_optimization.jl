@@ -12,8 +12,8 @@ function test_sopt_qfi(; savefile = false)
     @suppress optimize!(scheme, opt; algorithm = alg, objective = obj, savefile = savefile)
 
     f1 = QFIM(scheme)[1]
-    @test f1 >= f0 || isapprox(f1, f0; atol=1e-5)
-    
+    @test f1 >= f0 || isapprox(f1, f0; atol = 1e-5)
+
     # Ensure cleanup happens even if tests fail
     try
         isfile("f.csv") && rm("f.csv")
@@ -24,11 +24,17 @@ function test_sopt_qfi(; savefile = false)
 
     # Test other algorithms
     for alg in [
-        PSO(p_num=3, max_episode=[10, 10]),
-        DE(p_num=3, max_episode=10),
-        NM(p_num=5, max_episode=10)
+        PSO(p_num = 3, max_episode = [10, 10]),
+        DE(p_num = 3, max_episode = 10),
+        NM(p_num = 5, max_episode = 10),
     ]
-        @suppress optimize!(scheme, opt; algorithm=alg, objective=obj, savefile=savefile)
+        @suppress optimize!(
+            scheme,
+            opt;
+            algorithm = alg,
+            objective = obj,
+            savefile = savefile,
+        )
         try
             isfile("f.csv") && rm("f.csv")
             isfile("states.dat") && rm("states.dat")
@@ -40,7 +46,7 @@ function test_sopt_qfi(; savefile = false)
     # Test RI algorithm separately
     alg = RI()
     scheme = generate_scheme_kraus()
-    @suppress optimize!(scheme, opt; algorithm=alg, objective=obj, savefile=savefile)
+    @suppress optimize!(scheme, opt; algorithm = alg, objective = obj, savefile = savefile)
     try
         isfile("f.csv") && rm("f.csv")
         isfile("states.dat") && rm("states.dat")
@@ -63,8 +69,8 @@ function test_sopt_qfim(; savefile = false)
     @suppress optimize!(scheme, opt; algorithm = alg, objective = obj, savefile = savefile)
 
     f1 = LinearAlgebra.tr(pinv(QFIM(scheme)))
-    @test f1 <= f0 || isapprox(f1, f0; atol=1e-5)
-    
+    @test f1 <= f0 || isapprox(f1, f0; atol = 1e-5)
+
     try
         isfile("f.csv") && rm("f.csv")
         isfile("states.dat") && rm("states.dat")
@@ -75,11 +81,17 @@ function test_sopt_qfim(; savefile = false)
 
     # Test other algorithms
     for alg in [
-        PSO(p_num=3, max_episode=[10, 10]),
-        DE(p_num=3, max_episode=10),
-        NM(p_num=5, max_episode=10)
+        PSO(p_num = 3, max_episode = [10, 10]),
+        DE(p_num = 3, max_episode = 10),
+        NM(p_num = 5, max_episode = 10),
     ]
-        @suppress optimize!(scheme, opt; algorithm=alg, objective=obj, savefile=savefile)
+        @suppress optimize!(
+            scheme,
+            opt;
+            algorithm = alg,
+            objective = obj,
+            savefile = savefile,
+        )
         try
             isfile("f.csv") && rm("f.csv")
             isfile("states.dat") && rm("states.dat")
@@ -104,8 +116,8 @@ function test_sopt_cfi(; savefile = false)
     @suppress optimize!(scheme, opt; algorithm = alg, objective = obj, savefile = savefile)
 
     f1 = CFIM(scheme)[1]
-    @test f1 >= f0 || isapprox(f1, f0; atol=1e-5)
-    
+    @test f1 >= f0 || isapprox(f1, f0; atol = 1e-5)
+
     try
         isfile("f.csv") && rm("f.csv")
         isfile("states.dat") && rm("states.dat")
@@ -116,11 +128,17 @@ function test_sopt_cfi(; savefile = false)
 
     # Test other algorithms
     for alg in [
-        PSO(p_num=3, max_episode=[10, 10]),
-        DE(p_num=3, max_episode=10),
-        NM(p_num=5, max_episode=10)
+        PSO(p_num = 3, max_episode = [10, 10]),
+        DE(p_num = 3, max_episode = 10),
+        NM(p_num = 5, max_episode = 10),
     ]
-        @suppress optimize!(scheme, opt; algorithm=alg, objective=obj, savefile=savefile)
+        @suppress optimize!(
+            scheme,
+            opt;
+            algorithm = alg,
+            objective = obj,
+            savefile = savefile,
+        )
         try
             isfile("f.csv") && rm("f.csv")
             isfile("states.dat") && rm("states.dat")
@@ -145,8 +163,8 @@ function test_sopt_cfim(; savefile = false)
     @suppress optimize!(scheme, opt; algorithm = alg, objective = obj, savefile = savefile)
 
     f1 = LinearAlgebra.tr(pinv(CFIM(scheme)))
-    @test f1 <= f0 || isapprox(f1, f0; atol=1e-5)
-    
+    @test f1 <= f0 || isapprox(f1, f0; atol = 1e-5)
+
     try
         isfile("f.csv") && rm("f.csv")
         isfile("states.dat") && rm("states.dat")
@@ -157,11 +175,17 @@ function test_sopt_cfim(; savefile = false)
 
     # Test other algorithms
     for alg in [
-        PSO(p_num=3, max_episode=[10, 10]),
-        DE(p_num=3, max_episode=10),
-        NM(p_num=5, max_episode=10)
+        PSO(p_num = 3, max_episode = [10, 10]),
+        DE(p_num = 3, max_episode = 10),
+        NM(p_num = 5, max_episode = 10),
     ]
-        @suppress optimize!(scheme, opt; algorithm=alg, objective=obj, savefile=savefile)
+        @suppress optimize!(
+            scheme,
+            opt;
+            algorithm = alg,
+            objective = obj,
+            savefile = savefile,
+        )
         try
             isfile("f.csv") && rm("f.csv")
             isfile("states.dat") && rm("states.dat")
