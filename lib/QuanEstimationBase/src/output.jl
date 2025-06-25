@@ -100,5 +100,5 @@ function SaveReward(rewards)
     # JLD2 save
     open("reward.csv", "w") do r
         writedlm(r, rewards)
-    end    
+    end
 end

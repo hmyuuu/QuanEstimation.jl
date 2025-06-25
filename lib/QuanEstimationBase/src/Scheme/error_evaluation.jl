@@ -1,7 +1,7 @@
 function error_evaluation(
     scheme::Scheme;
     verbose::Bool = true,
-    objective=:QFIM,
+    objective = :QFIM,
     input_error_scaling = 1e-8,
     SLD_eps = 1e-6,
     abstol = 1e-6,
@@ -24,7 +24,7 @@ function param_error_evaluation(
     scheme::Scheme{S,LindbladDynamics{HT,DT,CT,Expm,P},M,E},
     input_error_scaling;
     verbose::Bool = true,
-    objective=:QFIM,
+    objective = :QFIM,
     abstol = 1e-6,
     reltol = 1e-3,
 ) where {S,HT,DT,CT,P,M,E}
@@ -50,7 +50,7 @@ function param_error_evaluation(
     scheme::Scheme{S,LindbladDynamics{HT,DT,CT,Ode,P},M,E},
     input_error_scaling;
     verbose::Bool = true,
-    objective=:QFIM,
+    objective = :QFIM,
     abstol = 1e-6,
     reltol = 1e-3,
 ) where {S,HT,DT,CT,P,M,E}
@@ -93,8 +93,8 @@ function QFIM_with_error(scheme::Scheme; verbose::Bool = false, eps = GLOBAL_EPS
                 [0.5 * rho] .* (
                     kron(SLD_tp_err, reshape(SLD_tp_err, 1, p_num)) +
                     kron(reshape(SLD_tp_err, 1, p_num), SLD_tp_err)
-                )
-            )
+                ),
+            ),
         ) - F
     return F, δF
 end
@@ -170,9 +170,9 @@ function QFIM_pure_with_error(ρ::Matrix{T}, ∂ρ_∂x::Matrix{T}) where {T<:Co
     SLD2_tp = SLD * SLD
     F = tr(ρ * SLD2_tp)
     F |> real
-end
+end#==========================================================#
 
-#==========================================================#
+
 ####################### calculate QFIM #####################
 function QFIM_SLD_with_error(
     ρ::Matrix{T},
@@ -226,10 +226,7 @@ end
 function QFIM_pure_with_error(ρ::Matrix{T}, ∂ρ_∂x::Vector{Matrix{T}}) where {T<:Complex}
     p_num = length(∂ρ_∂x)
     sld = [2 * ∂ρ_∂x[i] for i = 1:p_num]
-    (
-        [0.5 * ρ] .*
-        (kron(sld, reshape(sld, 1, p_num)) + kron(reshape(sld, 1, p_num), sld))
-    ) .|>
+    ([0.5 * ρ] .* (kron(sld, reshape(sld, 1, p_num)) + kron(reshape(sld, 1, p_num), sld))) .|>
     tr .|>
     real
 end

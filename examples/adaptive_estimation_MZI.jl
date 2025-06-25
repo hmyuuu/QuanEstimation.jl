@@ -13,12 +13,12 @@ rho0 = psi * psi'
 # prior distribution
 x = range(-pi, pi, length = 100)
 p = (1.0 / (x[end] - x[1])) * ones(length(x))
-apt = Adapt_MZI(x, p, rho0)
+apt = Adapt_MZI(x, p, rho0)#================online strategy=========================##================offline strategy=========================#
 
-#================online strategy=========================#
+
 # adapt!(apt; target=:sharpness, output="phi")
 
-#================offline strategy=========================#
+
 # algorithm: DE
 alg = DE(p_num = 10, ini_population = nothing, max_episode = 1000, c = 1.0, cr = 0.5)
 offline(apt, alg, target = :sharpness, seed = 1234)
